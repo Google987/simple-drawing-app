@@ -9,29 +9,27 @@ var doubleClick = false;
 var mouseDown = false;
 var width = 0;
 var height = 0;
-//console.log(canvas);
 
 function Box() {
-  this.x = 0;
-  this.y = 0;
-  this.w = 0; 
-  this.h = 0;
-  this.fill = '#444444';
+    this.x = 0;
+    this.y = 0;
+    this.w = 0;
+    this.h = 0;
+    this.fill = '#444444';
 }
-var boxes = []; 
+var boxes = [];
 
-canvas.addEventListener("dblclick", function(event){
-    //console.log("double clicked!!");
+canvas.addEventListener("dblclick", function (event) {
     doubleClick = true;
     drag = false;
     startX = event.offsetX;
     startY = event.offsetY;
     var i = -1;
-    for (let box of boxes) { 
+    for (let box of boxes) {
         i++;
-        if (startX > box.x && startX < box.x+box.w &&  
-        startY > box.y && startY < box.y+box.h) {
-            con.clearRect(box.x-1, box.y-1, box.w+2, box.h+2);
+        if (startX > box.x && startX < box.x + box.w &&
+            startY > box.y && startY < box.y + box.h) {
+            con.clearRect(box.x - 1, box.y - 1, box.w + 2, box.h + 2);
             boxes.splice(i, 1);
             doubleClick = false;
             drawAll();
@@ -39,116 +37,93 @@ canvas.addEventListener("dblclick", function(event){
             break;
         }
     };
- });
+});
 
-canvas.addEventListener("mousedown", function(event){
-   //console.log("mouse down");
-    //console.log(event);
+canvas.addEventListener("mousedown", function (event) {
     mouseDown = true;
     startX = event.offsetX;
     startY = event.offsetY;
 });
 var b = null;
-canvas.addEventListener("mousemove", function(event){
-    //console.log("mouse move");
-    //console.log(event);
-    if(mouseDown)
+canvas.addEventListener("mousemove", function (event) {
+    if (mouseDown)
         drag = true;
-    if(drag){
-        
-        width = event.offsetX-startX;
-        height = event.offsetY-startY;
-        
+    if (drag) {
+
+        width = event.offsetX - startX;
+        height = event.offsetY - startY;
+
         var i = -1;
-        if(b){
-            con.clearRect(0,0,canvas.width,canvas.height);
+        if (b) {
+            con.clearRect(0, 0, canvas.width, canvas.height);
             drawAll();
             con.fillStyle = b.fill;
-            con.fillRect(b.x+event.offsetX-startX,b.y+event.offsetY-startY, b.w, b.h);
-            //con.clearRect(b.x+event.offsetX-startX,b.y+event.offsetY-startY, b.w, b.h);
+            con.fillRect(b.x + event.offsetX - startX, b.y + event.offsetY - startY, b.w, b.h);
         }
-        for (let box of boxes) { 
+        for (let box of boxes) {
             i++;
-            if (startX > box.x && startX < box.x+box.w &&  
-            startY > box.y && startY < box.y+box.h && b===null) {
+            if (startX > box.x && startX < box.x + box.w &&
+                startY > box.y && startY < box.y + box.h && b === null) {
                 b = box;
-                con.clearRect(box.x-1, box.y-1, box.w+2, box.h+2);
+                con.clearRect(box.x - 1, box.y - 1, box.w + 2, box.h + 2);
                 boxes.splice(i, 1);
                 drawAll();
                 console.log("deleted!!");
                 break;
             }
         };
-        //console.log(startX,startY, width, height);        
     } return;
 });
 
-canvas.addEventListener("mouseup", function(event){
-    //console.log("mouse up");
-   // console.log(event);
-   mouseDown = false;
-   var color = randomColor();
-   if(b){
-        //console.log("i'm here"+b.x);
-        startX = b.x+ width;//(event.offsetX>b.x?width:(-1*width));
-        startY = b.y+ height;//(event.offsetY>b.y?height:(-1*height));
+canvas.addEventListener("mouseup", function (event) {
+    mouseDown = false;
+    var color = randomColor();
+    if (b) {
+        startX = b.x + width;
+        startY = b.y + height;
         width = b.w; height = b.h;
-        //console.log(startX,startY, width, height);
         color = b.fill;
         b = null;
     }
-   if(drag){
-    con.lineWidth = 2;
-    con.strokeStyle = "black";
-    
-    con.fillStyle = color;
-    //con.beginPath();
-    con.fillRect(startX,startY, width, height);
-    con.strokeRect(startX,startY, width, height);
-    //con.clearRect(startX,startY, width, height);
-    var rect = new Box;
-    rect.x = width<0?startX+width:startX;
-    rect.y = height<0?startY+height:startY;
-    rect.w = width<0?(width*-1):width;
-    rect.h = height<0?(height*-1):height;
-    rect.fill = color;
-    boxes.unshift(rect);
-    drag = false;
-    b = null;
-    //console.log("finished drawing");
-   } return;
+    if (drag) {
+        con.lineWidth = 2;
+        con.strokeStyle = "black";
+
+        con.fillStyle = color;
+        con.fillRect(startX, startY, width, height);
+        con.strokeRect(startX, startY, width, height);
+        var rect = new Box;
+        rect.x = width < 0 ? startX + width : startX;
+        rect.y = height < 0 ? startY + height : startY;
+        rect.w = width < 0 ? (width * -1) : width;
+        rect.h = height < 0 ? (height * -1) : height;
+        rect.fill = color;
+        boxes.unshift(rect);
+        drag = false;
+        b = null;
+    } return;
 });
 
-function reset(){
+function reset() {
     console.log('reset');
-    boxes.splice(0,boxes.length)
-    con.clearRect(0,0,canvas.width,canvas.height);
+    boxes.splice(0, boxes.length)
+    con.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-function randomColor() 
-{
-	var r, g,b;
-	r = Math.floor(Math.random() * 256);
-	g = Math.floor(Math.random() * 256);
-	b = Math.floor(Math.random() * 256);
-	var rgb = "rgb("+r+", "+g+", "+b+")";
-	return rgb;
+function randomColor() {
+    var r, g, b;
+    r = Math.floor(Math.random() * 256);
+    g = Math.floor(Math.random() * 256);
+    b = Math.floor(Math.random() * 256);
+    var rgb = "rgb(" + r + ", " + g + ", " + b + ")";
+    return rgb;
 }
 
-function drawAll(){
-    // boxes.forEach(box => { 
-    //     con.lineWidth = 2;
-    //     con.strokeStyle = "black";
-        
-    //     con.fillStyle = box.fill;
-    //     //con.beginPath();
-    //     con.fillRect(box.x,box.y, box.w, box.h);
-    //     con.strokeRect(box.x,box.y, box.w, box.h);
-    // });
-    for(var j = boxes.length-1; j>=0; j--){
+function drawAll() {
+    for (var j = boxes.length - 1; j >= 0; j--) {
         con.fillStyle = boxes[j].fill;
         //con.beginPath();
-        con.fillRect(boxes[j].x,boxes[j].y, boxes[j].w, boxes[j].h);
-        con.strokeRect(boxes[j].x,boxes[j].y, boxes[j].w, boxes[j].h);
+        con.fillRect(boxes[j].x, boxes[j].y, boxes[j].w, boxes[j].h);
+        con.strokeRect(boxes[j].x, boxes[j].y, boxes[j].w, boxes[j].h);
     }
 }
