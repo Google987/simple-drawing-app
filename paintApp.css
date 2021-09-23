@@ -18,3 +18,27 @@ body {
     border: .3em solid black;
     margin: 10px auto;
 }
+
+
+.circlebtn {
+    border: none; 
+    color: white; 
+    padding: 12px 11.7px; 
+    cursor: pointer; 
+    border: .1em solid black;
+    background: url(imgs/circle.png) no-repeat;
+    }
+.rectanglebtn {
+    border: none; 
+    color: white; 
+    padding: 12px 11.8px; 
+    cursor: pointer; 
+    border: .1em solid black;
+    background: url(imgs/rectangle.png) no-repeat;
+    }   
+ .circlebtn:hover{
+     background-color: rgb(197, 186, 186);
+ }   
+ .rectanglebtn:hover{
+    background-color: rgb(197, 186, 186);
+}

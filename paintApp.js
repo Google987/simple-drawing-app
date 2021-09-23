@@ -1,8 +1,3 @@
-var canvas = document.getElementById("canvas");
-var con = canvas.getContext('2d');
-
-var startX = 0;
-var startY = 0;
 var drag = false;
 var move = false;
 var doubleClick = false;
@@ -19,7 +14,7 @@ function Box() {
 }
 var boxes = [];
 
-canvas.addEventListener("dblclick", function (event) {
+function drawRectDblClick(event) {
     doubleClick = true;
     drag = false;
     startX = event.offsetX;
@@ -37,15 +32,16 @@ canvas.addEventListener("dblclick", function (event) {
             break;
         }
     };
-});
+}
 
-canvas.addEventListener("mousedown", function (event) {
+function drawRectMouseDown(event) {
     mouseDown = true;
     startX = event.offsetX;
     startY = event.offsetY;
-});
+}
+
 var b = null;
-canvas.addEventListener("mousemove", function (event) {
+function drawRectMouseMove(event) {
     if (mouseDown)
         drag = true;
     if (drag) {
@@ -73,9 +69,9 @@ canvas.addEventListener("mousemove", function (event) {
             }
         };
     } return;
-});
+}
 
-canvas.addEventListener("mouseup", function (event) {
+function drawRectMouseUp(event) {
     mouseDown = false;
     var color = randomColor();
     if (b) {
@@ -102,7 +98,7 @@ canvas.addEventListener("mouseup", function (event) {
         drag = false;
         b = null;
     } return;
-});
+}
 
 function reset() {
     console.log('reset');
